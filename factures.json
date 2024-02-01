@@ -1,0 +1,31 @@
+{
+    "num":1,
+    "data":"20-01-2023",
+    "NIF":"12345678Z",
+    "client":"Pere Pi",
+    "telefon":"12345678",
+    "email":"p.pi@sapalomera.cat",
+    "adreca":"C/ de la informàtica, 101",
+    "poblacio":"Santa Tecla",
+    "articles":[
+        {
+            "codi":4,
+            "article":"Teclat",
+            "unidad":1,
+            "preu":50
+        },{
+            "codi":6,
+            "article":"Torre",
+            "unidad":1,
+            "preu":25
+        },{
+            "codi":2,
+            "article":"CPU",
+            "unidad":2,
+            "preu":100
+        }
+    ],
+    "descompte":10,
+    "IVA":21,
+    "pagada":true
+}

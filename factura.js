@@ -1,6 +1,8 @@
 "use strict";
+
+//Dialogo
 const factura=document.getElementById("factura");
-const productos=dcument.getElementById("productos");
+const productos=document.getElementById("productos");
 class Factura {
 	constructor() {
 		// Inicialitzar valors
@@ -30,7 +32,7 @@ function mostrar(){
 }
 
 function afegir(){
-
+	factura.showModal();
 }
 
 function editar(){
@@ -52,7 +54,7 @@ document.getElementById("guardar").addEventListener("click",guardar);
 //Abrir dialog y añadir productos
 document.getElementById("productos").addEventListener("click",mostrar);
 //Abrir dialog y rellenar form
-document.getElementById("afegir").addEventListener("click",afegir);
+document.getElementById("nuevaFactura").addEventListener("click",afegir);
 //Abrir dialog y editar form ya rellenado con datos
 document.getElementById("editar").addEventListener("click",editar);
 //Borrar factura

@@ -33,42 +33,46 @@
 
         </tbody>
     </table>
-    <dialog id="factura">
-        <label for="id">
-            ID: <input type="number" name="id" id="id" readonly>
-        </label>
-        <label for="data">
-            Data: <input type="date" name="data" id="data">
-        </label>
-        <label for="pagat">
-            Pagada: <input type="checkbox" name="pagat" id="pagat">
-        </label>
-        <hr>
-        <label for="client">
-            Client: <input type="text" name="client" id="client">
-        </label>
-        <label for="nif">
-            NIF: <input type="text" name="nif" id="nif">
-        </label>
-        <label for="email">
-            E-mail: <input type="email" name="email" id="email">
-        </label>
-        <label for="telefon">
-            Telèfon: <input type="tel" name="telefon" id="telefon">
-        </label>
-        <label for="adreca">
-            Adreça: <input type="text" name="adreca" id="adreca">
-        </label>
-        <label for="poblacio">
-            Població: <input type="text" name="poblacio" id="poblacio">
-        </label>
-        <hr>
-        <label for="dte">
-            Dte.: <input type="number" name="dte" id="dte">
-        </label>
-        <label for="iva">
-            IVA: <input type="number" name="iva" id="iva">
-        </label>
+    <dialog id="factura" style="width: 600px; height: 500px;text-align: center;">
+        <form id="facturaForm">
+            <label for="id">
+                ID: <input type="number" name="id" id="id" readonly>
+            </label><br>
+            <label for="data">
+                Data: <input type="date" name="data" id="data">
+            </label><br>
+            <label for="pagat">
+                Pagada: <input type="checkbox" name="pagat" id="pagat">
+            </label><br>
+            <br>
+            <label for="client">
+                Client: <input type="text" name="client" id="client">
+            </label><br>
+            <label for="nif">
+                NIF: <input type="text" name="nif" id="nif">
+            </label><br>
+            <label for="email">
+                E-mail: <input type="email" name="email" id="email">
+            </label><br>
+            <label for="telefon">
+                Telèfon: <input type="tel" name="telefon" id="telefon">
+            </label><br>
+            <label for="adreca">
+                Adreça: <input type="text" name="adreca" id="adreca">
+            </label><br>
+            <label for="poblacio">
+                Població: <input type="text" name="poblacio" id="poblacio">
+            </label><br>
+            <br>
+            <label for="dte">
+                Dte.: <input type="number" name="dte" id="dte">
+            </label><br>
+            <label for="iva">
+                IVA: <input type="number" name="iva" id="iva">
+            </label><br>
+            <br>
+            <button type="submit">Guardar</button>
+        </form>
     </dialog>
     <dialog id="productos">
         <h2>Detall de la factura</h2>

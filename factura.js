@@ -1,3 +1,6 @@
+"use strict";
+const factura=document.getElementById("factura");
+const productos=dcument.getElementById("productos");
 class Factura {
 	constructor() {
 		// Inicialitzar valors
@@ -42,12 +45,19 @@ function imprimir(){
 
 }
 
-document.getElementById("carregar").addEventListener("click",carregar);
+//Cargar documento JSON desde tu maquina
+document.getElementById("recuperar").addEventListener("click",carregar);
+//Descargar documento JSON
 document.getElementById("guardar").addEventListener("click",guardar);
-document.getElementById("mostrar").addEventListener("click",mostrar);
+//Abrir dialog y añadir productos
+document.getElementById("productos").addEventListener("click",mostrar);
+//Abrir dialog y rellenar form
 document.getElementById("afegir").addEventListener("click",afegir);
+//Abrir dialog y editar form ya rellenado con datos
 document.getElementById("editar").addEventListener("click",editar);
+//Borrar factura
 document.getElementById("esborrar").addEventListener("click",esborrar);
+//Imprimir factura
 document.getElementById("imprimir").addEventListener("click",imprimir);
 //asdas
 $(document).ready(init);

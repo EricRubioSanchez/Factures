@@ -39,7 +39,7 @@ function esborrar(){
 }
 
 function imprimir(){
-    
+
 }
 
 document.getElementById("carregar").addEventListener("click",carregar);
@@ -49,5 +49,5 @@ document.getElementById("afegir").addEventListener("click",afegir);
 document.getElementById("editar").addEventListener("click",editar);
 document.getElementById("esborrar").addEventListener("click",esborrar);
 document.getElementById("imprimir").addEventListener("click",imprimir);
-
+//asdas
 $(document).ready(init);

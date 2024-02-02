@@ -22,7 +22,14 @@ class Factura {
 		this.adreca=adreca;
 		this.poblacio=poblacio;
 	}
-
+}
+class Articulo {
+	constructor(codi,article,unidad,preu){
+		this.codi= codi;
+		this.article= article;
+		this.unidad= unidad;
+		this.preu= preu;
+	}
 }
 
 function carregar(event){
@@ -70,7 +77,7 @@ function afegir(event){
 	const productos=[];
 	$("#afegirArticles").on("click",(eve)=>{
 		eve.preventDefault()
-		console.log(eve)
+		console.log(eve.target.parentElement.children[0].children[1])
 	})
 	let factura=new Factura(id,fecha,nif,cliente,tel,email,dte,iva,pagado,adreca,poblacio)
 	console.log(factura)

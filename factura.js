@@ -111,15 +111,23 @@ function afegir(event) {
 	let dte = parseFloat(form[9].value / 100);
 	let iva = parseFloat(form[10].value / 100);
 	productosDia.showModal();
+	
 	const productos = [];
 	$("#afegirArticles").on("click", (eve) => {
-		eve.preventDefault()
-		console.log(eve.target.parentElement.children[0].children[1])
+		eve.preventDefault();
+		
 	})
-	let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio)
-	console.log(factura)
+	if(productos.length!=0){
+		let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio)
+		carregarTaula(factura)
+	}
 }
-
+function afegirLinea(){
+	const tabla=document.getElementById("tablaArtiuclo");
+	const tr= document.createElement("tr");
+	tr.appendChild(document.createElement("td").setAttribute("id","codi"))
+	tabla.appendChild()
+}
 function editar() {
 
 }

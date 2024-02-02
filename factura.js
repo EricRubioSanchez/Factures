@@ -48,6 +48,14 @@ function carregar(event) {
 		//Bucle per factura
 		for (let index = 0; index < json.length; index++) {
 			const objecte = json[index];
+			let articles = [];
+
+			//Bucle per Article
+			for (let index = 0; index < objecte["articles"].length; index++) {
+				const objecteArt = objecte["articles"][index];
+				let article=new Articulo(objecteArt["codi"],objecteArt["article"],objecteArt["unidad"],objecteArt["preu"]);
+				articles.push(article);	
+			}
 			let factura = new Factura(objecte["num"], 
 										new Date(objecte["data"]), 
 										objecte["NIF"], 
@@ -59,10 +67,11 @@ function carregar(event) {
 										objecte["pagada"], 
 										objecte["adreca"], 
 										objecte["poblacio"], 
-										objecte["articles"]
+										articles
 									);
 			Facturas.push(factura);
 			carregarTaula(factura);
+			console.log(factura)
 		}
 	};
 }
@@ -83,9 +92,24 @@ afegirTaula(factura["nif"]);
 afegirTaula(factura["client"]);
 afegirTaula(factura["telefon"]);
 afegirTaula(factura["email"]);
+let subtotal=0;
+for (let index = 0; index < factura["productos"].length; index++) {
+	const article = factura["productos"][index];
+	subtotal+=(article["preu"]*article["unidad"]);
+}
 
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal));
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal*(factura["dte"])));
+let baseIMP=subtotal*(1-factura["dte"]);
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP));
 
-	taula.appendChild(tr);
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP*(factura["iva"])));
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP*(1+factura["iva"])));
+let checkbox = document.createElement("input");
+checkbox.setAttribute("type","checkbox")
+if(factura["pagat"]){ checkbox.setAttribute("checked","")}
+tr.appendChild(checkbox);
+taula.appendChild(tr);
 }
 
 function guardar() {
@@ -115,23 +139,15 @@ function afegir(event) {
 	let dte = parseFloat(form[9].value / 100);
 	let iva = parseFloat(form[10].value / 100);
 	productosDia.showModal();
-	
 	const productos = [];
 	$("#afegirArticles").on("click", (eve) => {
-		eve.preventDefault();
-		
+		eve.preventDefault()
+		console.log(eve.target.parentElement.children[0].children[1])
 	})
-	if(productos.length!=0){
-		let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio)
-		carregarTaula(factura)
-	}
+	let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio)
+	console.log(factura)
 }
-function afegirLinea(){
-	const tabla=document.getElementById("tablaArtiuclo");
-	const tr= document.createElement("tr");
-	tr.appendChild(document.createElement("td").setAttribute("id","codi"))
-	tabla.appendChild()
-}
+
 function editar() {
 
 }

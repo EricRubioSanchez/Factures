@@ -1,4 +1,7 @@
 "use strict";
+import {canviarCelda, crearTable, crearTable2, moureTaula,omplirDades,crearBotonsTaula} from "./table.js";
+import {crearElement,modificarElement,moureElement} from "./Exercici.js";
+
 
 //Dialogo
 const facturaDia=document.getElementById("factura");
@@ -43,8 +46,30 @@ function carregar(event){
 			const objecte = json[index];
 			let factura = new Factura(objecte["num"],new Date(objecte["data"]),objecte["NIF"],objecte["client"],objecte["telefon"],objecte["email"],objecte["descompte"],objecte["IVA"],objecte["pagada"],objecte["adreca"],objecte["poblacio"],objecte["articles"]);
 			Facturas.push(factura);
+			carregarTaula(factura);
 		}
 	};			
+}
+
+function carregarTaula(factura){
+	function afegirTaula(valor){
+		let td = document.createElement("td");
+		let textNode= document.createTextNode(valor);
+		td.appendChild(textNode);
+		tr.appendChild(td);
+	}
+let taula=document.getElementById("tabla");
+let tr = document.createElement("tr");
+
+afegirTaula(factura["id"]);
+afegirTaula(factura["data"].toDateString());
+afegirTaula(factura["nif"]);
+afegirTaula(factura["client"]);
+afegirTaula(factura["telefon"]);
+afegirTaula(factura["email"]);
+
+
+taula.appendChild(tr);
 }
 
 function guardar(){

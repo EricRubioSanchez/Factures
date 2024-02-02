@@ -1,6 +1,6 @@
 [{
     "num":1,
-    "data":"20-01-2023",
+    "data":"2023-01-20",
     "NIF":"12345678Z",
     "client":"Pere Pi",
     "telefon":"12345678",
@@ -25,12 +25,12 @@
             "preu":100
         }
     ],
-    "descompte":10,
-    "IVA":21,
+    "descompte":0.10,
+    "IVA":0.21,
     "pagada":true
 },{
     "num":2,
-    "data":"31-12-2003",
+    "data":"2003-12-31",
     "NIF":"12345678Z",
     "client":"Pere Pi",
     "telefon":"12345678",
@@ -55,12 +55,12 @@
             "preu":0.05
         }
     ],
-    "descompte":10,
-    "IVA":21,
+    "descompte":0,
+    "IVA":0.21,
     "pagada":true
 },{
     "num":6,
-    "data":"20-01-2023",
+    "data":"2023-01-20",
     "NIF":"12345678Z",
     "client":"Marta Mas",
     "telefon":"12345678",
@@ -85,7 +85,7 @@
             "preu":100
         }
     ],
-    "descompte":10,
-    "IVA":21,
+    "descompte":0.3,
+    "IVA":0.11,
     "pagada":true
 }]

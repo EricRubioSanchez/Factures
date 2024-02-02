@@ -36,7 +36,7 @@
     <dialog id="factura" style="width: 600px; height: 500px;text-align: center;">
         <form id="facturaForm">
             <label for="id">
-                ID: <input type="number" name="id" id="id" readonly>
+                ID: <input type="number" name="id" id="id" value="" readonly>
             </label><br>
             <label for="data">
                 Data: <input type="date" name="data" id="data">
@@ -74,7 +74,7 @@
             <button type="submit">Guardar</button>
         </form>
     </dialog>
-    <dialog id="productos">
+    <dialog id="productos" style="height: 300px;width: auto;">
         <h2>Detall de la factura</h2>
         <table>
             <thead>

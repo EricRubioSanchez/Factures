@@ -1,4 +1,6 @@
 "use strict";
+
+//Dialogo
 const factura=document.getElementById("factura");
 const productos=document.getElementById("productos");
 class Factura {
@@ -36,7 +38,7 @@ function mostrar(){
 }
 
 function afegir(){
-
+	factura.showModal();
 }
 
 function editar(){

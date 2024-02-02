@@ -31,7 +31,12 @@ function carregar(event){
 	let jsonAsString;
 	fileReader.onload = function(event) {
 		jsonAsString=fileReader.result;
-		console.log(JSON.parse(jsonAsString))
+		let json=JSON.parse(jsonAsString);
+		for (let index = 0; index < json.length; index++) {
+			const objecte = json[index];
+			let factura = new Factura(objecte["num"],new Date(objecte["data"]),objecte["NIF"],objecte["client"],objecte["telefon"],objecte["email"],objecte["descompte"],objecte["IVA"],objecte["pagada"],objecte["adreca"],objecte["poblacio"],objecte["articles"]);
+			Facturas.push(factura);
+		}
 	};			
 }
 

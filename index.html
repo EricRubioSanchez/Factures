@@ -10,7 +10,7 @@
 </head>
 <body>
     <h1 style="text-align: center;">Gestió de factures</h1>
-    <input id="recuperar" type="file" accept="application/json" value="Recuperar">
+    <input id="recuperar" type="file" accept="application/json">
     <button id="guardar">Guardar</button> 
     <button id="nuevaFactura">Nueva factura</button>
     <table>
@@ -34,6 +34,7 @@
         </tbody>
     </table>
     <dialog id="factura" style="width: 600px; height: 500px;text-align: center;">
+        <h1>Nueva factura</h1>
         <form id="facturaForm">
             <label for="id">
                 ID: <input type="number" name="id" id="id" value="" readonly>
@@ -71,24 +72,49 @@
                 IVA: <input type="number" name="iva" id="iva">
             </label><br>
             <br>
-            <button type="submit">Guardar</button>
+            <button type="submit">Guardar</button> 
+            <button type="button" id="cancelar">Cancelar</button>
         </form>
     </dialog>
-    <dialog id="productos" style="height: 300px;width: auto;">
+    <dialog id="productos" style="height: 300px;width: 50%;">
         <h2>Detall de la factura</h2>
-        <table>
-            <thead>
-                <th>Codi</th>
-                <th>Article</th>
-                <th>Uni.</th>
-                <th>Preu</th>
-                <th>Subtotal</th>
-                <th>Acc</th>
+        <form id="articuloForm">
+            <table style="width: 90%;text-align: center;">
+                <thead>
+                    <tr>
+                    <th>Codi</th>
+                    <th>Article</th>
+                    <th>Uni.</th>
+                    <th>Preu</th>
+                    <th>Subtotal</th>
+                    <th>Acc</th>
+                </tr>
             </thead>
             <tbody id="tabla">
-                
+                <tr id="linea1">
+                    <td id="id1">1</td>
+                    <td id="articulo1" contenteditable></td>
+                    <td id="unidades1" contenteditable>1</td>
+                    <td id="preu1" contenteditable>0</td>
+                    <td>precio*cantidad</td>
+                    <td>
+                        <button id="subir">/\</button>
+                        <button id="bajar">\/</button>
+                        <button id="eliminarArticulo">Basura</button>
+                    </td>
+                </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4">Total</th>
+                    <td>precio de cada uno</td>
+                    <td><button id="afegirProducte">+</button></td>
+                </tr>
+            </tfoot>
         </table>
+        <button type="button" id="afegirArticles">Afegir articles</button>
+        <button type="button" id="cancelar">Cancelar</button>
+    </form>
     </dialog>
 </body>
 </html>

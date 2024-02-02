@@ -44,13 +44,12 @@ function init(){
 }
 
 function mostrar(){
-    console.log(event.target);
+
 }
 
 function afegir(event){
-	console.log(event)
-	let form=event.target;
 	event.preventDefault();
+	let form=event.target;
 	let id=form[0].value;
 	let fecha=new Date(form[1].value);
 	let pagado=form[2].value=="on"? true : false;
@@ -63,7 +62,11 @@ function afegir(event){
 	let dte=parseFloat(form[9].value/100);
 	let iva=parseFloat(form[10].value/100);
 	productosDia.showModal();
-	
+	const productos=[];
+	$("#afegirArticles").on("click",(eve)=>{
+		eve.preventDefault()
+		console.log(eve)
+	})
 	let factura=new Factura(id,fecha,nif,cliente,tel,email,dte,iva,pagado,adreca,poblacio)
 	console.log(factura)
 }
@@ -96,12 +99,8 @@ document.getElementById("guardar").addEventListener("click",guardar);
 //Abrir dialog y añadir productos
 document.getElementById("productos").addEventListener("click",mostrar);
 //Abrir dialog y rellenar form
-<<<<<<< HEAD
-document.getElementById("nuevaFactura").addEventListener("click",afegir);
-/*
-=======
 document.getElementById("nuevaFactura").addEventListener("click",abrirNuevaFactura);
->>>>>>> d166e23aa967e9ad4bbdd3096683b119c073b4d1
+
 //Abrir dialog y editar form ya rellenado con datos
 //document.getElementById("editar").addEventListener("click",editar);
 //Borrar factura
@@ -113,5 +112,5 @@ $("#facturaForm").on("submit",afegir)
 
 
 //asdas
-*/
+
 $(document).ready(init);

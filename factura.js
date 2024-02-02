@@ -39,12 +39,25 @@ function carregar(event){
 	let fileReader = new FileReader();
 	fileReader.readAsText(event.target.files[0]);
 	let jsonAsString;
+
 	fileReader.onload = function(event) {
+		//Agafa JSON
 		jsonAsString=fileReader.result;
 		let json=JSON.parse(jsonAsString);
+
+		//Bucle per factura
 		for (let index = 0; index < json.length; index++) {
 			const objecte = json[index];
-			let factura = new Factura(objecte["num"],new Date(objecte["data"]),objecte["NIF"],objecte["client"],objecte["telefon"],objecte["email"],objecte["descompte"],objecte["IVA"],objecte["pagada"],objecte["adreca"],objecte["poblacio"],objecte["articles"]);
+			let articles = [];
+
+			//Bucle per Article
+			for (let index = 0; index < objecte["articles"].length; index++) {
+				const objecteArt = objecte["articles"][index];
+				let article=new Articulo(objecteArt["codi"],objecteArt["article"],objecteArt["unidad"],objecteArt["preu"]);
+				articles.push(article);	
+			}
+
+			let factura = new Factura(objecte["num"],new Date(objecte["data"]),objecte["NIF"],objecte["client"],objecte["telefon"],objecte["email"],objecte["descompte"],objecte["IVA"],objecte["pagada"],objecte["adreca"],objecte["poblacio"],articles);
 			Facturas.push(factura);
 			carregarTaula(factura);
 		}
@@ -67,7 +80,19 @@ afegirTaula(factura["nif"]);
 afegirTaula(factura["client"]);
 afegirTaula(factura["telefon"]);
 afegirTaula(factura["email"]);
+let subtotal=0;
+for (let index = 0; index < factura["productos"].length; index++) {
+	const article = factura["productos"][index];
+	subtotal+=(article["preu"]*article["unidad"]);
+}
 
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal));
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal*(factura["dte"])));
+let baseIMP=subtotal*(1-factura["dte"]);
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP));
+
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP*(factura["iva"])));
+afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP*(1+factura["iva"])));
 
 taula.appendChild(tr);
 }

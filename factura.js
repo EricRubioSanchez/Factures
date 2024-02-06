@@ -86,6 +86,16 @@ function carregarTaula(factura) {
 		let button = document.createElement("button");
 		let textNode = document.createTextNode(valor);
 		button.appendChild(textNode);
+		if(valor=="Eliminar"){button.setAttribute("class","eliminar")
+		button.addEventListener("click",esborrar)
+	}
+		else if(valor=="Imprimir"){button.setAttribute("class","imprimir")
+		button.addEventListener("click",imprimir)}
+
+		else{button.setAttribute("class","editar")
+		button.addEventListener("click",editar)
+		}
+		
 		td.appendChild(button);
 
 	}
@@ -126,7 +136,9 @@ function carregarTaula(factura) {
 	//Botons
 	td = document.createElement("td");
 	afegirBoto("Imprimir");
+	afegirBoto("Editar");
 	afegirBoto("Eliminar");
+	
 	tr.appendChild(td);
 
 	taula.appendChild(tr);
@@ -267,12 +279,55 @@ function editar() {
 	
 }
 
-function esborrar() {
+function esborrar(event) {
+	let id = parseInt(event.target.parentElement.parentElement.firstChild.firstChild.wholeText)
 
+	//Para eliminar la factura de la array
+	for (let index = 0; index < Facturas.length; index++) {
+		const factura = Facturas[index];
+		if(factura["id"]==id){
+			Facturas.splice(index,1);
+
+			//Para eliminar la factura de la tabla
+			let tabla= document.getElementById("tabla");
+			for (let index = 0; index < tabla.children.length; index++) {
+				const idTabla = parseInt(tabla.children[index].firstChild.firstChild.wholeText);
+				if(idTabla ==id){tabla.children[index].remove()}
+			}
+		}
+	}
 }
 
-function imprimir() {
+function setPrint() {
+	const closePrint = () => {
+	  document.body.removeChild(this);
+	};
+	this.contentWindow.onbeforeunload = closePrint;
+	this.contentWindow.onafterprint = closePrint;
+	this.contentWindow.print();
+  }
 
+function imprimir(event) {
+
+
+	let id = parseInt(event.target.parentElement.parentElement.firstChild.firstChild.wholeText)
+
+	//Para eliminar la factura de la array
+	for (let index = 0; index < Facturas.length; index++) {
+		const factura = Facturas[index];
+		if(factura["id"]==id){
+			
+		const myJSON = JSON.stringify(factura);
+		localStorage.setItem("testJSON", myJSON);
+
+		const hideFrame = document.createElement("iframe");
+		hideFrame.onload = setPrint;
+		hideFrame.style.display = "none"; // hide iframe
+		hideFrame.src = "factura.html";
+		document.body.appendChild(hideFrame);
+
+		}
+	}
 }
 function abrirNuevaFactura() {
 	facturaDia.showModal();
@@ -303,10 +358,6 @@ document.getElementById("afegirProducte").addEventListener("click",(event)=>{
 })
 //Abrir dialog y editar form ya rellenado con datos
 //document.getElementById("editar").addEventListener("click",editar);
-//Borrar factura
-//document.getElementById("esborrar").addEventListener("click",esborrar);
-//Imprimir factura
-//document.getElementById("imprimir").addEventListener("click",imprimir);
 
 $("#facturaForm").on("submit", afegir)
 

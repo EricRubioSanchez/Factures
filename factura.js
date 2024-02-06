@@ -260,6 +260,7 @@ function afegirLineaFactura(){
 	tr.appendChild(td6)
 
 }
+
 function calcularPreu(id){
 	let unitats=document.getElementById("unitats"+id)
 	let preu=document.getElementById("preu"+id)
@@ -275,8 +276,70 @@ function calcularPreu(id){
 	total.textContent=totalNum + " €"
 }
 
-function editar() {
-	
+function editar(event) {
+	let id = parseInt(event.target.parentElement.parentElement.firstChild.firstChild.wholeText)
+	let facturaSelec;
+	//Para eliminar la factura de la array
+	for (let index = 0; index < Facturas.length; index++) {
+		const factura = Facturas[index];
+		if(factura["id"]==id){
+			facturaSelec=factura;
+		}
+	}
+	productosDia.showModal()
+	let tabla=document.getElementById("tablaArticulo")
+	tabla.innerHTML=""
+	for (let i = 0; i < facturaSelec.productos.length; i++) {
+		const producto = facturaSelec.productos[i];
+
+		let codi = producto.codi;
+		let tr = document.createElement("tr")
+		tr.setAttribute("id", "linea" + codi)
+		tabla.appendChild(tr);
+
+		let td1 = document.createElement("td", codi)
+		td1.setAttribute("id", "id" + codi)
+		td1.textContent = producto.codi;
+
+		let td2 = document.createElement("td")
+		td2.setAttribute("id", "article" + codi)
+		td2.contentEditable = true
+		td2.textContent= producto.article
+
+		let td3 = document.createElement("td", 1)
+		td3.setAttribute("id", "unitats" + codi)
+		td3.contentEditable = true
+		td3.textContent = producto.unidad
+		td3.addEventListener("input", () => calcularPreu(codi))
+
+		let td4 = document.createElement("td", 0)
+		td4.setAttribute("id", "preu" + codi)
+		td4.contentEditable = true
+		td4.textContent = producto.preu
+		td4.addEventListener("input", () => calcularPreu(codi))
+
+		let td5 = document.createElement("td")
+		td5.setAttribute("id", "subtotal" + codi)
+
+		let td6 = document.createElement("td")
+		let boton = document.createElement("button")
+		boton.setAttribute("id", "eliminar" + codi)
+		boton.textContent = "Esborrar";
+		boton.addEventListener("click", (event) => {
+			event.preventDefault()
+			event.target.parentElement.parentElement.remove()
+			calcularPreu(codi)
+		})
+		td6.appendChild(boton)
+
+		tr.appendChild(td1)
+		tr.appendChild(td2)
+		tr.appendChild(td3)
+		tr.appendChild(td4)
+		tr.appendChild(td5)
+		tr.appendChild(td6)
+		calcularPreu(codi)
+	}
 }
 
 function esborrar(event) {
@@ -356,8 +419,14 @@ document.getElementById("afegirProducte").addEventListener("click",(event)=>{
 	event.preventDefault()
 	afegirLineaFactura();
 })
-//Abrir dialog y editar form ya rellenado con datos
-//document.getElementById("editar").addEventListener("click",editar);
+document.getElementById("cancelar").addEventListener("click",(event)=>{
+	event.preventDefault();
+	event.target.parentElement.parentElement.close();
+})
+document.getElementById("cancelar2").addEventListener("click",(event)=>{
+	event.preventDefault();
+	event.target.parentElement.parentElement.close();
+})
 
 $("#facturaForm").on("submit", afegir)
 

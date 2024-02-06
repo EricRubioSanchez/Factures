@@ -71,7 +71,6 @@ function carregar(event) {
 			);
 			Facturas.push(factura);
 			carregarTaula(factura);
-			console.log(factura)
 		}
 	};
 }
@@ -188,11 +187,22 @@ function afegir(event) {
 	productosDia.showModal();
 	const productos = [];
 	$("#afegirArticles").on("click", (eve) => {
+		console.log(1)
 		eve.preventDefault()
-		console.log(eve.target.parentElement.children[0].children[1])
+		let lineas = eve.target.parentElement.children[0].children[1].children;
+		for (let i = 0; i < lineas.length; i++) {
+			const linea = lineas[i];
+			const articulo = new Articulo(linea.children[0].textContent, linea.children[1].textContent, linea.children[2].textContent, linea.children[3].textContent)
+			productos.push(articulo);
+		}
+		console.log(productos)
+		let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio,productos)
+		carregarTaula(factura)
+		Facturas.push(factura)
+		productosDia.close()
+		facturaDia.close();
 	})
-	let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio)
-	console.log(factura)
+	
 }
 
 function editar() {

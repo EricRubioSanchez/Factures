@@ -89,6 +89,12 @@ function carregarTaula(factura) {
 		let button = document.createElement("button");
 		let textNode = document.createTextNode(valor);
 		button.appendChild(textNode);
+		if(valor=="Eliminar"){button.setAttribute("class","eliminar")
+		button.addEventListener("click",esborrar)
+	}
+		else{button.setAttribute("class","imprimir")
+		button.addEventListener("click",imprimir)}
+		
 		td.appendChild(button);
 
 	}
@@ -193,12 +199,28 @@ function editar() {
 
 }
 
-function esborrar() {
+function esborrar(event) {
+	let id = parseInt(event.target.parentElement.parentElement.firstChild.firstChild.wholeText)
+	
+	//Para eliminar la factura de la array
+	for (let index = 0; index < Facturas.length; index++) {
+		const factura = Facturas[index];
+		if(factura["id"]==id){
+			Facturas.splice(index,1);
 
+			//Para eliminar la factura de la tabla
+			let tabla= document.getElementById("tabla");
+			for (let index = 0; index < tabla.children.length; index++) {
+				const idTabla = parseInt(tabla.children[index].firstChild.firstChild.wholeText);
+				if(idTabla ==id){tabla.children[index].remove()}
+			}
+		}
+	}
 }
 
-function imprimir() {
-
+function imprimir(event) {
+	alert(1)
+	console.log(event.target)
 }
 function abrirNuevaFactura() {
 	facturaDia.showModal();
@@ -221,10 +243,6 @@ document.getElementById("nuevaFactura").addEventListener("click", abrirNuevaFact
 
 //Abrir dialog y editar form ya rellenado con datos
 //document.getElementById("editar").addEventListener("click",editar);
-//Borrar factura
-//document.getElementById("esborrar").addEventListener("click",esborrar);
-//Imprimir factura
-//document.getElementById("imprimir").addEventListener("click",imprimir);
 
 $("#facturaForm").on("submit", afegir)
 

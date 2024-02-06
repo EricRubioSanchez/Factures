@@ -129,6 +129,7 @@ function carregarTaula(factura) {
 	let td = document.createElement("td");
 	let checkbox = document.createElement("input");
 	checkbox.setAttribute("type", "checkbox")
+	checkbox.addEventListener("click",canviarPagat)
 	if (factura["pagat"]) { checkbox.setAttribute("checked", "") }
 	td.appendChild(checkbox);
 	tr.appendChild(td);
@@ -142,6 +143,20 @@ function carregarTaula(factura) {
 	tr.appendChild(td);
 
 	taula.appendChild(tr);
+}
+
+function canviarPagat(event){
+	let id = parseInt(event.target.parentElement.parentElement.firstChild.firstChild.wholeText)
+
+	//Para eliminar la factura de la array
+	for (let index = 0; index < Facturas.length; index++) {
+		const factura = Facturas[index];
+		if(factura["id"]==id){
+			if(event.target.checked){
+				factura.pagat=true;
+			}else{factura.pagat=false;}
+		}
+	}
 }
 
 function download(filename, text) {

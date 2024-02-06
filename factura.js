@@ -76,11 +76,20 @@ function carregar(event) {
 }
 
 function carregarTaula(factura) {
+	//Per afegir les dades
 	function afegirTaula(valor) {
 		let td = document.createElement("td");
 		let textNode = document.createTextNode(valor);
 		td.appendChild(textNode);
 		tr.appendChild(td);
+	}
+	//Per afegir botons
+	function afegirBoto(valor){
+		let button = document.createElement("button");
+		let textNode = document.createTextNode(valor);
+		button.appendChild(textNode);
+		td.appendChild(button);
+
 	}
 	let taula = document.getElementById("tabla");
 	let tr = document.createElement("tr");
@@ -111,8 +120,26 @@ function carregarTaula(factura) {
 	taula.appendChild(tr);
 }
 
-function guardar() {
+function download(filename, text) {
+    // Crear un objecte similar a un arxiu format per bytes
+    const file = new Blob([text], {type: 'text/plain'});
 
+    // Crear un link "fantasma" (no s'afegirà realment al document)
+    const a = document.createElement('a');
+
+    // Crear una URL que representa l'arxiu a descarregar
+    a.href = URL.createObjectURL(file);
+    // Indicar el nom de l'arxiu que es descarregarà
+    a.download = filename;
+    // Simular un clic sobre l'enllaç
+    a.click();
+    // Eliminar el link "fantasma"
+    URL.revokeObjectURL(a.href);
+}
+
+function guardar() {
+	console.log(JSON.stringify(Facturas))
+	download("factures.json", JSON.stringify(Facturas));
 }
 
 function init() {

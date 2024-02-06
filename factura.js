@@ -91,8 +91,12 @@ function carregarTaula(factura) {
 		if(valor=="Eliminar"){button.setAttribute("class","eliminar")
 		button.addEventListener("click",esborrar)
 	}
-		else{button.setAttribute("class","imprimir")
+		else if(valor=="Imprimir"){button.setAttribute("class","imprimir")
 		button.addEventListener("click",imprimir)}
+
+		else{button.setAttribute("class","editar")
+		button.addEventListener("click",editar)
+		}
 		
 		td.appendChild(button);
 
@@ -134,7 +138,9 @@ function carregarTaula(factura) {
 	//Botons
 	td = document.createElement("td");
 	afegirBoto("Imprimir");
+	afegirBoto("Editar");
 	afegirBoto("Eliminar");
+	
 	tr.appendChild(td);
 
 	taula.appendChild(tr);
@@ -211,7 +217,7 @@ function editar() {
 
 function esborrar(event) {
 	let id = parseInt(event.target.parentElement.parentElement.firstChild.firstChild.wholeText)
-	
+
 	//Para eliminar la factura de la array
 	for (let index = 0; index < Facturas.length; index++) {
 		const factura = Facturas[index];
@@ -228,9 +234,36 @@ function esborrar(event) {
 	}
 }
 
+function setPrint() {
+	const closePrint = () => {
+	  document.body.removeChild(this);
+	};
+	this.contentWindow.onbeforeunload = closePrint;
+	this.contentWindow.onafterprint = closePrint;
+	this.contentWindow.print();
+  }
+
 function imprimir(event) {
-	alert(1)
-	console.log(event.target)
+
+
+	let id = parseInt(event.target.parentElement.parentElement.firstChild.firstChild.wholeText)
+
+	//Para eliminar la factura de la array
+	for (let index = 0; index < Facturas.length; index++) {
+		const factura = Facturas[index];
+		if(factura["id"]==id){
+			
+		const myJSON = JSON.stringify(factura);
+		localStorage.setItem("testJSON", myJSON);
+
+		const hideFrame = document.createElement("iframe");
+		hideFrame.onload = setPrint;
+		hideFrame.style.display = "none"; // hide iframe
+		hideFrame.src = "factura.html";
+		document.body.appendChild(hideFrame);
+
+		}
+	}
 }
 function abrirNuevaFactura() {
 	facturaDia.showModal();

@@ -40,10 +40,10 @@ function carregar(event) {
 	fileReader.readAsText(event.target.files[0]);
 	let jsonAsString;
 
-	fileReader.onload = function(event) {
+	fileReader.onload = function (event) {
 		//Agafa JSON
-		jsonAsString=fileReader.result;
-		let json=JSON.parse(jsonAsString);
+		jsonAsString = fileReader.result;
+		let json = JSON.parse(jsonAsString);
 
 		//Bucle per factura
 		for (let index = 0; index < json.length; index++) {
@@ -53,25 +53,24 @@ function carregar(event) {
 			//Bucle per Article
 			for (let index = 0; index < objecte["articles"].length; index++) {
 				const objecteArt = objecte["articles"][index];
-				let article=new Articulo(objecteArt["codi"],objecteArt["article"],objecteArt["unidad"],objecteArt["preu"]);
-				articles.push(article);	
+				let article = new Articulo(objecteArt["codi"], objecteArt["article"], objecteArt["unidad"], objecteArt["preu"]);
+				articles.push(article);
 			}
-			let factura = new Factura(objecte["num"], 
-										new Date(objecte["data"]), 
-										objecte["NIF"], 
-										objecte["client"], 
-										objecte["telefon"], 
-										objecte["email"], 
-										objecte["descompte"], 
-										objecte["IVA"], 
-										objecte["pagada"], 
-										objecte["adreca"], 
-										objecte["poblacio"], 
-										articles
-									);
+			let factura = new Factura(objecte["num"],
+				new Date(objecte["data"]),
+				objecte["NIF"],
+				objecte["client"],
+				objecte["telefon"],
+				objecte["email"],
+				objecte["descompte"],
+				objecte["IVA"],
+				objecte["pagada"],
+				objecte["adreca"],
+				objecte["poblacio"],
+				articles
+			);
 			Facturas.push(factura);
 			carregarTaula(factura);
-			console.log(factura)
 		}
 	};
 }
@@ -86,30 +85,30 @@ function carregarTaula(factura) {
 	let taula = document.getElementById("tabla");
 	let tr = document.createElement("tr");
 
-afegirTaula(factura["id"]);
-afegirTaula(factura["data"].toDateString());
-afegirTaula(factura["nif"]);
-afegirTaula(factura["client"]);
-afegirTaula(factura["telefon"]);
-afegirTaula(factura["email"]);
-let subtotal=0;
-for (let index = 0; index < factura["productos"].length; index++) {
-	const article = factura["productos"][index];
-	subtotal+=(article["preu"]*article["unidad"]);
-}
+	afegirTaula(factura["id"]);
+	afegirTaula(factura["data"].toDateString());
+	afegirTaula(factura["nif"]);
+	afegirTaula(factura["client"]);
+	afegirTaula(factura["telefon"]);
+	afegirTaula(factura["email"]);
+	let subtotal = 0;
+	for (let index = 0; index < factura["productos"].length; index++) {
+		const article = factura["productos"][index];
+		subtotal += (article["preu"] * article["unidad"]);
+	}
 
-afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal));
-afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal*(factura["dte"])));
-let baseIMP=subtotal*(1-factura["dte"]);
-afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP));
+	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal));
+	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal * (factura["dte"])));
+	let baseIMP = subtotal * (1 - factura["dte"]);
+	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP));
 
-afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP*(factura["iva"])));
-afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP*(1+factura["iva"])));
-let checkbox = document.createElement("input");
-checkbox.setAttribute("type","checkbox")
-if(factura["pagat"]){ checkbox.setAttribute("checked","")}
-tr.appendChild(checkbox);
-taula.appendChild(tr);
+	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP * (factura["iva"])));
+	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP * (1 + factura["iva"])));
+	let checkbox = document.createElement("input");
+	checkbox.setAttribute("type", "checkbox")
+	if (factura["pagat"]) { checkbox.setAttribute("checked", "") }
+	tr.appendChild(checkbox);
+	taula.appendChild(tr);
 }
 
 function guardar() {
@@ -141,11 +140,22 @@ function afegir(event) {
 	productosDia.showModal();
 	const productos = [];
 	$("#afegirArticles").on("click", (eve) => {
+		console.log(1)
 		eve.preventDefault()
-		console.log(eve.target.parentElement.children[0].children[1])
+		let lineas = eve.target.parentElement.children[0].children[1].children;
+		for (let i = 0; i < lineas.length; i++) {
+			const linea = lineas[i];
+			const articulo = new Articulo(linea.children[0].textContent, linea.children[1].textContent, linea.children[2].textContent, linea.children[3].textContent)
+			productos.push(articulo);
+		}
+		console.log(productos)
+		let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio,productos)
+		carregarTaula(factura)
+		Facturas.push(factura)
+		productosDia.close()
+		facturaDia.close();
 	})
-	let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio)
-	console.log(factura)
+	
 }
 
 function editar() {

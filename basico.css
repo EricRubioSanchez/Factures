@@ -12,6 +12,6 @@ th {
 tr{
     border: 1px solid black;
 }
-label{
-    margin-top: 20px;
+input{
+    margin: 3px;
 }

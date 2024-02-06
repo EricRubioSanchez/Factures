@@ -166,7 +166,11 @@ function mostrar() {
 
 function afegir(event) {
 	event.preventDefault();
-	let form = event.target;
+	productosDia.showModal();	
+}
+
+function afegirLinea(event){
+	let form = document.getElementById("facturaForm")
 	let id = form[0].value;
 	let fecha = new Date(form[1].value);
 	let pagado = form[2].value == "on" ? true : false;
@@ -178,25 +182,22 @@ function afegir(event) {
 	let poblacio = form[8].value;
 	let dte = parseFloat(form[9].value / 100);
 	let iva = parseFloat(form[10].value / 100);
-	productosDia.showModal();
+
+	event.preventDefault()
 	const productos = [];
-	$("#afegirArticles").on("click", (eve) => {
-		console.log(1)
-		eve.preventDefault()
-		let lineas = eve.target.parentElement.children[0].children[1].children;
-		for (let i = 0; i < lineas.length; i++) {
-			const linea = lineas[i];
-			const articulo = new Articulo(linea.children[0].textContent, linea.children[1].textContent, linea.children[2].textContent, linea.children[3].textContent)
-			productos.push(articulo);
-		}
-		console.log(productos)
-		let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio,productos)
-		carregarTaula(factura)
-		Facturas.push(factura)
-		productosDia.close()
-		facturaDia.close();
-	})
-	
+	let lineas = event.target.parentElement.children[0].children[1].children;
+
+	for (let i = 0; i < lineas.length; i++) {
+		const linea = lineas[i];
+		const articulo = new Articulo(linea.children[0].textContent, linea.children[1].textContent, linea.children[2].textContent, linea.children[3].textContent)
+		productos.push(articulo);
+	}
+
+	let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio,productos)
+	carregarTaula(factura)
+	Facturas.push(factura)
+	productosDia.close()
+	facturaDia.close();
 }
 
 function editar() {
@@ -228,6 +229,8 @@ document.getElementById("guardar").addEventListener("click", guardar);
 document.getElementById("productos").addEventListener("click", mostrar);
 //Abrir dialog y rellenar form
 document.getElementById("nuevaFactura").addEventListener("click", abrirNuevaFactura);
+
+document.getElementById("afegirArticles").addEventListener("click",afegirLinea);
 
 //Abrir dialog y editar form ya rellenado con datos
 //document.getElementById("editar").addEventListener("click",editar);

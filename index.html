@@ -10,7 +10,8 @@
 </head>
 <body>
     <h1 style="text-align: center;">Gestió de factures</h1>
-    <input id="recuperar" type="file" accept="application/json">
+    <input id="recuperar" type="file" accept="application/json" hidden>
+    <button><label for="recuperar">Importar</label></button>
     <button id="guardar">Guardar</button> 
     <button id="nuevaFactura">Nueva factura</button>
     <table>
@@ -76,7 +77,7 @@
             <button type="button" id="cancelar">Cancelar</button>
         </form>
     </dialog>
-    <dialog id="productos" style="height: 300px;width: 50%;">
+    <dialog id="productos" style="height: 400px;width: 50%;">
         <h2>Detall de la factura</h2>
         <form id="articuloForm">
             <table style="width: 90%;text-align: center;">
@@ -91,27 +92,17 @@
                 </tr>
             </thead>
             <tbody id="tablaArticulo">
-                <tr id="linea1">
-                    <td id="id1">1</td>
-                    <td id="articulo1" contenteditable></td>
-                    <td id="unidades1" contenteditable>1</td>
-                    <td id="preu1" contenteditable>0</td>
-                    <td>precio*cantidad</td>
-                    <td>
-                        <button id="eliminarArticulo">Basura</button>
-                    </td>
-                </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <th colspan="4">Total</th>
-                    <td>precio de cada uno</td>
+                    <td id="total">0 €</td>
                     <td><button id="afegirProducte">+</button></td>
                 </tr>
             </tfoot>
         </table>
         <button type="button" id="afegirArticles">Afegir articles</button>
-        <button type="button" id="cancelar">Cancelar</button>
+        <button type="button" id="cancelar2">Cancelar</button>
     </form>
     </dialog>
 </body>

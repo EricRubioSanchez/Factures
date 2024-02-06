@@ -1,6 +1,4 @@
 "use strict";
-import { canviarCelda, crearTable, crearTable2, moureTaula, omplirDades, crearBotonsTaula } from "./table.js";
-import { crearElement, modificarElement, moureElement } from "./Exercici.js";
 
 
 //Dialogo
@@ -196,12 +194,77 @@ function afegirLinea(event){
 	let factura = new Factura(id, fecha, nif, cliente, tel, email, dte, iva, pagado, adreca, poblacio,productos)
 	carregarTaula(factura)
 	Facturas.push(factura)
+	document.getElementById("articuloForm").reset()
+	document.getElementById("facturaForm").reset()
 	productosDia.close()
 	facturaDia.close();
 }
+function afegirLineaFactura(){
+	let tabla=document.getElementById("tablaArticulo")
+	
+	let id=tabla.children.length+1;
+	let tr=document.createElement("tr")
+	tr.setAttribute("id","linea"+id)
+	tabla.appendChild(tr);
+	
+	let td1=document.createElement("td",id)
+	td1.setAttribute("id","id"+id)
+	td1.textContent=id;
+
+	let td2=document.createElement("td")
+	td2.setAttribute("id","article"+id)
+	td2.contentEditable =true
+
+	let td3=document.createElement("td",1)
+	td3.setAttribute("id","unitats"+id)
+	td3.contentEditable =true
+	td3.textContent =1
+	td3.addEventListener("input",()=>calcularPreu(id))
+
+	let td4=document.createElement("td",0)
+	td4.setAttribute("id","preu"+id)
+	td4.contentEditable =true
+	td4.textContent =0
+	td4.addEventListener("input",()=>calcularPreu(id))
+
+	let td5=document.createElement("td")
+	td5.setAttribute("id","subtotal"+id)
+	
+	let td6=document.createElement("td")
+	let boton=document.createElement("button")
+	boton.setAttribute("id","eliminar"+id)
+	boton.textContent="Esborrar";
+	boton.addEventListener("click",(event)=>{
+		event.preventDefault()
+		event.target.parentElement.parentElement.remove()
+	})
+	td6.appendChild(boton)
+
+	tr.appendChild(td1)
+	tr.appendChild(td2)
+	tr.appendChild(td3)
+	tr.appendChild(td4)
+	tr.appendChild(td5)
+	tr.appendChild(td6)
+
+}
+function calcularPreu(id){
+	let unitats=document.getElementById("unitats"+id)
+	let preu=document.getElementById("preu"+id)
+	let subtotal=document.getElementById("subtotal"+id)
+	subtotal.textContent=parseInt(unitats.textContent)*parseFloat(preu.textContent)+" €"
+	let total= document.getElementById("total")
+	let totalNum=0;
+	let tabla=document.getElementById("tablaArticulo").children
+	for (let i = 0; i < tabla.length; i++) {
+		const linea = tabla[i];
+		totalNum+=parseInt(linea.children[4].textContent)
+	}
+	total.textContent=totalNum + " €"
+}
 
 function editar() {
-
+	
 }
 
 function esborrar() {
@@ -219,6 +282,8 @@ function abrirNuevaFactura() {
 	$("#data").val(`${fecha.getFullYear()}-0${fecha.getMonth() + 1}-0${fecha.getDate()}`);
 	$("#dte").val(0);
 	$("#iva").val(21);
+	document.getElementById("tablaArticulo").innerHTML=""
+	afegirLineaFactura();
 }
 
 //Cargar documento JSON desde tu maquina
@@ -232,6 +297,10 @@ document.getElementById("nuevaFactura").addEventListener("click", abrirNuevaFact
 
 document.getElementById("afegirArticles").addEventListener("click",afegirLinea);
 
+document.getElementById("afegirProducte").addEventListener("click",(event)=>{
+	event.preventDefault()
+	afegirLineaFactura();
+})
 //Abrir dialog y editar form ya rellenado con datos
 //document.getElementById("editar").addEventListener("click",editar);
 //Borrar factura

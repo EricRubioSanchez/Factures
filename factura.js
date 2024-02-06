@@ -51,20 +51,20 @@ function carregar(event) {
 			let articles = [];
 
 			//Bucle per Article
-			for (let index = 0; index < objecte["articles"].length; index++) {
-				const objecteArt = objecte["articles"][index];
+			for (let index = 0; index < objecte["productos"].length; index++) {
+				const objecteArt = objecte["productos"][index];
 				let article = new Articulo(objecteArt["codi"], objecteArt["article"], objecteArt["unidad"], objecteArt["preu"]);
 				articles.push(article);
 			}
-			let factura = new Factura(objecte["num"],
+			let factura = new Factura(objecte["id"],
 				new Date(objecte["data"]),
-				objecte["NIF"],
+				objecte["nif"],
 				objecte["client"],
 				objecte["telefon"],
 				objecte["email"],
-				objecte["descompte"],
-				objecte["IVA"],
-				objecte["pagada"],
+				objecte["dte"],
+				objecte["iva"],
+				objecte["pagat"],
 				objecte["adreca"],
 				objecte["poblacio"],
 				articles
@@ -84,7 +84,7 @@ function carregarTaula(factura) {
 		tr.appendChild(td);
 	}
 	//Per afegir botons
-	function afegirBoto(valor){
+	function afegirBoto(valor) {
 		let button = document.createElement("button");
 		let textNode = document.createTextNode(valor);
 		button.appendChild(textNode);
@@ -100,6 +100,7 @@ function carregarTaula(factura) {
 	afegirTaula(factura["client"]);
 	afegirTaula(factura["telefon"]);
 	afegirTaula(factura["email"]);
+	//Calcular subtotal
 	let subtotal = 0;
 	for (let index = 0; index < factura["productos"].length; index++) {
 		const article = factura["productos"][index];
@@ -107,34 +108,47 @@ function carregarTaula(factura) {
 	}
 
 	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal));
+	//Descompte
 	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(subtotal * (factura["dte"])));
+	//BaseIMP
 	let baseIMP = subtotal * (1 - factura["dte"]);
 	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP));
-
+	//IVA
 	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP * (factura["iva"])));
+	//Total
 	afegirTaula(new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(baseIMP * (1 + factura["iva"])));
+	//pagat
+	let td = document.createElement("td");
 	let checkbox = document.createElement("input");
 	checkbox.setAttribute("type", "checkbox")
 	if (factura["pagat"]) { checkbox.setAttribute("checked", "") }
-	tr.appendChild(checkbox);
+	td.appendChild(checkbox);
+	tr.appendChild(td);
+
+	//Botons
+	td = document.createElement("td");
+	afegirBoto("Imprimir");
+	afegirBoto("Eliminar");
+	tr.appendChild(td);
+
 	taula.appendChild(tr);
 }
 
 function download(filename, text) {
-    // Crear un objecte similar a un arxiu format per bytes
-    const file = new Blob([text], {type: 'text/plain'});
+	// Crear un objecte similar a un arxiu format per bytes
+	const file = new Blob([text], { type: 'text/plain' });
 
-    // Crear un link "fantasma" (no s'afegirà realment al document)
-    const a = document.createElement('a');
+	// Crear un link "fantasma" (no s'afegirà realment al document)
+	const a = document.createElement('a');
 
-    // Crear una URL que representa l'arxiu a descarregar
-    a.href = URL.createObjectURL(file);
-    // Indicar el nom de l'arxiu que es descarregarà
-    a.download = filename;
-    // Simular un clic sobre l'enllaç
-    a.click();
-    // Eliminar el link "fantasma"
-    URL.revokeObjectURL(a.href);
+	// Crear una URL que representa l'arxiu a descarregar
+	a.href = URL.createObjectURL(file);
+	// Indicar el nom de l'arxiu que es descarregarà
+	a.download = filename;
+	// Simular un clic sobre l'enllaç
+	a.click();
+	// Eliminar el link "fantasma"
+	URL.revokeObjectURL(a.href);
 }
 
 function guardar() {
